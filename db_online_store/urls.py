@@ -32,4 +32,7 @@ urlpatterns = [
     url(r'^register/$', accountsViews.register, name='register'), # ADD NEW PATTERN!
     url(r'^login/$', accountsViews.user_login, name='login'),
     url(r'^logout/$', accountsViews.user_logout, name='logout'),
+    url(r'^account/$', accountsViews.accounts, name='account'),
+    url(r'^account/edit/$', accountsViews.edit_account, name='edit_account'),
+    url(r'^account/delete/$', accountsViews.delete_account, name='delete_account'),
 ]

@@ -2,71 +2,83 @@
 
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>DB Online Store</title>
-		<meta name="description" content="">
-		
-		<!-- Latest compiled and minified CSS -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+<head>
+	<meta charset="utf-8">
+	<title>DB Online Store</title>
+	<meta name="description" content="">
 
-		<!-- Optional theme -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" integrity="sha384-aUGj/X2zp5rLCbBxumKTCw2Z50WgIr1vs/PFN4praOTvYXWlVyh2UtNUU0KAUhAX" crossorigin="anonymous">
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
 
-		<link rel="stylesheet" type="text/css" href="{% static 'main.css' %}">
-	</head>
-	<body class="container">	
-		
-			<nav class="navbar navbar-inverse navbar-fixed-top">
-	      <div class="container">
-	        <div class="navbar-header">
-	          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-	            <span class="sr-only">Toggle navigation</span>
-	            <span class="icon-bar"></span>
-	            <span class="icon-bar"></span>
-	            <span class="icon-bar"></span>
-	          </button>
-	          <a class="navbar-brand" href="/">DB Online Store</a>
-	        </div>
-	        <div id="navbar" class="navbar-collapse collapse">
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" integrity="sha384-aUGj/X2zp5rLCbBxumKTCw2Z50WgIr1vs/PFN4praOTvYXWlVyh2UtNUU0KAUhAX" crossorigin="anonymous">
+
+	<link rel="stylesheet" type="text/css" href="{% static 'main.css' %}">
+</head>
+<body class="container">	
+
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="/">DB Online Store</a>
+			</div>
+			<div id="navbar" class="navbar-collapse collapse">
 				<div class="navbar-form navbar-right">
 					
 					{% if user.is_anonymous %}
-						<a class="btn btn-success" href="{% url 'login' %}">Login</a>
-						<a class="btn btn-success" href="{% url 'register' %}">Sign up</a>
+					<a class="btn btn-success" href="{% url 'login' %}">Login</a>
+					<a class="btn btn-success" href="{% url 'register' %}">Sign up</a>
 					{% else %}
-						<span style="color: white; margin-left: 15px;">{{ user }}</span>
-						<a class="btn btn-success" href="{% url 'logout' %}">Logout</a>
+					<!-- <span style="color: white; margin-left: 15px;">Hello, {{ user.first_name | capfirst }}</span>
+					<a class="btn btn-success" href="{% url 'logout' %}">Logout</a> -->
+					
+				</div>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="dropdown">
+						<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ user.first_name | capfirst }}<span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="{% url 'account' %}">View Account</a></li>
+							<li><a href="{% url 'edit_account' %}">Edit Account</a></li>
+							<li role="separator" class="divider"></li>
+							<li><a href="{% url 'logout' %}">Logout</a></li>
+						</ul>
+					</li>
+				</ul>
 					{% endif %}
-			  	</div>
-	        </div><!--/.navbar-collapse -->
-	      </div>
-	    </nav>
+			</div><!--/.navbar-collapse -->
+		</div>
+	</nav>
 
-	    {% if user.is_authenticated %}
-		<h1>Rango says... hello {{ user.username }}!</h1>
-		{% else %}
-		<h1>Rango says... hello world!</h1>
-		{% endif %}
-		
-		{% block content %}
+	<!-- {% if user.is_authenticated %}
+	<h1>Rango says... hello {{ user.username }}!</h1>
+	{% else %}
+	<h1>Rango says... hello world!</h1>
+	{% endif %} -->
 
-		{% endblock content %}
+	{% block content %}
 
-		<hr>
+	{% endblock content %}
 
-	    <footer>
-	    	<p>&copy; Ariel Castro and Agustin Malo 2015</p>
-	    	<p>University of Florida. GO GATORS!</p>
-	    </footer>
+	<hr>
+
+	<footer>
+		<p>&copy; Ariel Castro and Agustin Malo 2015</p>
+		<p>University of Florida. GO GATORS!</p>
+	</footer>
 		<!-- Bootstrap core JavaScript
-	    ================================================== -->
-	    <!-- Placed at the end of the document so the pages load faster -->
-	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		================================================== -->
+		<!-- Placed at the end of the document so the pages load faster -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
 
 		<!-- Latest compiled and minified JavaScript -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
 		<script type="text/javascript" src="{% static 'main.js' %}"></script>
 	</body>
-</html>
+	</html>

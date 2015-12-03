@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            <div class="well well-sm">
+                <div class="row">
+                    <div class="col-sm-6 col-md-4 col-xs-3">
+                        <img src="http://s3.amazonaws.com/37assets/svn/765-default-avatar.png" alt="" class="img-rounded img-responsive" />
+                    </div>
+                    <div class="col-sm-6 col-md-8 col-xs-5">
+                        <h4>
+                            {{user.first_name | capfirst}} {{user.last_name | capfirst}}</h4>
+                        </i></cite></small>
+                        <p>
+                            <small><cite title="Email">Email: </cite></small>
+                            <i class="glyphicon glyphicon-envelope"></i>{{user.email}}
+                            <br />
+                            <small><cite title="Address:">Address: </cite></small>
+                            <i class="glyphicon glyphicon-home"></i>{{user_profile.address}}
+                            <br />
+                            <small><cite title="Date Joined:">Date Joined: </cite></small>
+                            <i class="glyphicon glyphicon-calendar"></i>{{user.date_joined}}</p>
+
+                        <!-- Split button -->
+                        <div class="btn-group">
+                            <a href="{% url 'edit_account' %}" type="button" class="btn btn-primary">Edit Account</a>
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                <span class="caret"></span><span class="sr-only">Edit Account</span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="{% url 'delete_account' %}">Delete Account</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

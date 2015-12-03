@@ -3,6 +3,61 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from .forms import UserForm, UserProfileForm
 from django.contrib.auth.decorators import login_required
+from .models import UserProfile
+from django.core.urlresolvers import reverse
+
+@login_required
+def edit_account(request):
+    if request.method == 'POST':
+        
+        current_user = request.user
+        user_id = current_user.id
+        user_profile = UserProfile.objects.get(user_id=user_id)
+
+        user_form = UserForm(data=request.POST, instance=request.user)
+        profile_form = UserProfileForm(data=request.POST, instance=user_profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user = user_form.save()
+
+            # Now we hash the password with the set_password method.
+            # Once hashed, we can update the user object.
+            user.set_password(user.password)
+            user.save()
+
+            # Now sort out the UserProfile instance.
+            # Since we need to set the user attribute ourselves, we set commit=False.
+            # This delays saving the model until we're ready to avoid integrity problems.
+            profile = profile_form.save(commit=False)
+            profile.user = user
+
+            # Now we save the UserProfile model instance.
+            profile.save()
+            login(request, user)
+            return HttpResponseRedirect(reverse('account'))
+    else:
+        user_form = UserForm()
+        profile_form = UserProfileForm()
+    return render(request,
+            'accounts/account_edit.html',
+            {'user_form': user_form, 'profile_form': profile_form} )
+
+@login_required
+def delete_account(request):
+    current_user = request.user
+    user_id = current_user.id
+    user_profile = UserProfile.objects.get(user_id=user_id)
+    return render(request, 'accounts/account_delete.html', {
+        'user_profile': user_profile,
+    })
+
+@login_required
+def accounts(request):
+    current_user = request.user
+    user_id = current_user.id
+    user_profile = UserProfile.objects.get(user_id=user_id)
+    return render(request, 'accounts/account.html', {
+        'user_profile': user_profile,
+    })
 
 # Use the login_required() decorator to ensure only those logged in can access the view.
 @login_required
@@ -11,7 +66,7 @@ def user_logout(request):
     logout(request)
 
     # Take the user back to the homepage.
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect('/login/')
 
 
 def register(request):
@@ -92,7 +147,7 @@ def user_login(request):
                 # If the account is valid and active, we can log the user in.
                 # We'll send the user back to the homepage.
                 login(request, user)
-                return HttpResponseRedirect('/')
+                return HttpResponseRedirect('/account/')
             else:
                 # An inactive account was used - no logging in!
                 return HttpResponse("Your Rango account is disabled.")
