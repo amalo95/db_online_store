@@ -14,8 +14,16 @@ def index(request):
 def product_detail(request, id):
 	try:
 		product = Product.objects.get(id=id)
+		current_user = request.user
+	    user_id = current_user.id
+	    user_profile = UserProfile.objects.get(user_id=user_id)
+	    if request.method == 'POST':
+	        current_user.delete()
+	        user_profile.delete()
+	        return HttpResponseRedirect(reverse('account'))
 	except Product.DoesNotExist:
 		raise Http404('This item does not exist')
-	return render(request, 'products/product_detail.html', {
+
+    return render(request, 'products/product_detail.html', {
 		'product': product,
 	})

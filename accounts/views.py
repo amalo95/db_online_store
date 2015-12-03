@@ -6,6 +6,26 @@ from django.contrib.auth.decorators import login_required
 from .models import UserProfile
 from django.core.urlresolvers import reverse
 
+
+@login_required
+def orders(request):
+    current_user = request.user
+    user_id = current_user.id
+    user_profile = UserProfile.objects.get(user_id=user_id)
+    return render(request, 'accounts/orders.html', {
+        'user_profile': user_profile,
+    })
+
+# @login_required
+# def cart(request):
+#     current_user = request.user
+#     user_id = current_user.id
+#     user_profile = UserProfile.objects.get(user_id=user_id)
+#     return render(request, 'accounts/cart.html', {
+#         'user_profile': user_profile,
+#     })
+
+
 @login_required
 def edit_account(request):
     if request.method == 'POST':

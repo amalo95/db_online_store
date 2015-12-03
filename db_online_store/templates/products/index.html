@@ -34,7 +34,7 @@
 
       <h3>Items in Stock:</h3>
       <ul>
-        {% for product in products%}
+        {% for product in products|dictsort:"price" %}
         <li>
           <a href="{% url 'product_detail' product.id %}">{{ product.name | capfirst }}</a>
           <a class="pull-right" href="{% url 'product_detail' product.id %}">{{ product.price}}</a>
