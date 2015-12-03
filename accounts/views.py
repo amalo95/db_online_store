@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponseRedirect, Http404
 from django.http import HttpResponseRedirect, HttpResponse
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from .forms import UserForm, UserProfileForm
 from django.contrib.auth.decorators import login_required
 from .models import UserProfile
@@ -32,8 +32,8 @@ def edit_account(request):
 
             # Now we save the UserProfile model instance.
             profile.save()
-            login(request, user)
-            return HttpResponseRedirect(reverse('account'))
+            update_session_auth_hash(request, user)
+            return HttpResponseRedirect(reverse('index'))
     else:
         user_form = UserForm()
         profile_form = UserProfileForm()
@@ -46,6 +46,10 @@ def delete_account(request):
     current_user = request.user
     user_id = current_user.id
     user_profile = UserProfile.objects.get(user_id=user_id)
+    if request.method == 'POST':
+        current_user.delete()
+        user_profile.delete()
+        return HttpResponseRedirect(reverse('account'))
     return render(request, 'accounts/account_delete.html', {
         'user_profile': user_profile,
     })
@@ -143,6 +147,7 @@ def user_login(request):
         # with matching credentials was found.
         if user:
             # Is the account active? It could have been disabled.
+            logged_in = True
             if user.is_active:
                 # If the account is valid and active, we can log the user in.
                 # We'll send the user back to the homepage.
@@ -153,12 +158,14 @@ def user_login(request):
                 return HttpResponse("Your Rango account is disabled.")
         else:
             # Bad login details were provided. So we can't log the user in.
+            logged_in = False
             print "Invalid login details: {0}, {1}".format(username, password)
-            return HttpResponse("Invalid login details supplied.")
+            return render(request, 'registration/login.html', {'logged_in': logged_in})
 
     # The request is not a HTTP POST, so display the login form.
     # This scenario would most likely be a HTTP GET.
     else:
+        logged_in = True
         # No context variables to pass to the template system, hence the
         # blank dictionary object...
-        return render(request, 'registration/login.html', {})
+        return render(request, 'registration/login.html', {'logged_in': logged_in})

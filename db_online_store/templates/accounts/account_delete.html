@@ -24,16 +24,18 @@
                             <br />
                             <small><cite title="Date Joined:">Date Joined: </cite></small>
                             <i class="glyphicon glyphicon-calendar"></i>{{user.date_joined}}</p>
+                            
+                            <p style="color: red;">{{user.first_name | capfirst}}, are you sure you want to <strong>PERMANENTLY</strong> delete your account?</p>
+                            <br />
+                            <form action="/account/delete/" method="post">
+                                {% csrf_token %}
+                                <input type="submit" value="DELETE FOREVER">
+                            </form>
 
                         <!-- Split button -->
                         <div class="btn-group">
-                            <a href="#2" type="button" class="btn btn-primary">Edit Account</a>
-                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                <span class="caret"></span><span class="sr-only">Edit Account</span>
-                            </button>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="#1">Delete Account</a></li>
-                            </ul>
+                            <a href="{% url 'account' %}" type="button" class="btn btn-primary">Back</a>
+                            
                         </div>
                     </div>
                 </div>
