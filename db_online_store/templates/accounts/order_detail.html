@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    
+<div class="container">
+    <div class="row">
+        <div class="col-sm-2 col-md-2"></div>
+        <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+            <div class="well well-sm">
+                <h2 class="text-center">Order Summary</h2>
+                <table class="table table-striped">
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th> 
+                    <th>Qty.</th>
+                </tr>
+                {% for contain in containSet %}
+                <tr>
+                    <td ><a href="">{{ contain.product.name | capfirst }}</a></td>
+                    <td ><a href="">{{ contain.product.price }}</a></td>
+                    <td href="">{{ contain.quantity}}</td>
+                </tr>
+                {% endfor %}
+                </table>
+                
+                <div class="btn-group">
+                            <a href="{% url 'account' %}" type="button" class="btn btn-primary">Back</a>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-sm-2 col-md-2"></div>
+    </div>
+</div>
+
+
+{% endblock content %}

@@ -9,8 +9,8 @@ class Product(models.Model):
 	active = models.BooleanField()
 
 class Order(models.Model):
-	date = models.DateField(auto_now=True, auto_now_add=False)
-	paid = models.BooleanField()
+	date = models.DateField(auto_now=False, auto_now_add=True)
+	paid = models.BooleanField(default=1)
 
 class OrderRelation(models.Model):
 	order = models.ForeignKey('Order')

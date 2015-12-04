@@ -8,18 +8,24 @@
         <div class="col-sm-3 col-md-3"></div>
         <div class="col-xs-12 col-sm-6 col-md-6">
             <div class="well well-sm">
-                <div class="row">
-                    <div class="col-sm-6 col-md-4 col-xs-3">
-                        <img src="http://s3.amazonaws.com/37assets/svn/765-default-avatar.png" alt="" class="img-rounded img-responsive" />
-                    </div>
-                    <div class="col-sm-6 col-md-8 col-xs-5">
-                        <h3>Order Page:</h3>
-
-                        
-                        <div class="btn-group">
+                <h2 class="text-center">Orders Placed</h2>
+                <table class="table table-striped">
+                <tr>
+                    <th>OrderID</th>
+                    <th>Paid</th> 
+                    <th>Date.</th>
+                </tr>
+                {% for orderRelation in orders %}
+                <tr>
+                    <td ><a href="{% url 'order_detail' orderRelation.order.id %}">{{ orderRelation.order.id }}</a></td>
+                    <td>{{ orderRelation.order.paid }}</td>
+                    <td>{{ orderRelation.order.date}}</td>
+                </tr>
+                {% endfor %}
+                </table>
+                
+                <div class="btn-group">
                             <a href="{% url 'account' %}" type="button" class="btn btn-primary">Back</a>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

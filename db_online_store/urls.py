@@ -14,6 +14,7 @@ urlpatterns = [
         url(r'^account/$', accountsViews.accounts, name='account'),
         url(r'^account/edit/$', accountsViews.edit_account, name='edit_account'),
         url(r'^account/delete/$', accountsViews.delete_account, name='delete_account'),
-        url(r'^account/orders/$', accountsViews.orders, name='orders'),
         url(r'^account/cart/$', cartViews.cart, name='cart'),
+        url(r'^account/orders/$', accountsViews.orders, name='orders'),
+        url(r'^account/orders/(?P<id>\d+)/', accountsViews.order_detail, name='order_detail'),
 ]

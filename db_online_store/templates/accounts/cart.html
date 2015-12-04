@@ -23,12 +23,16 @@
                 </tr>
                 {% endfor %}
                 </table>
-                
+                <p>total is {{total}}</p>
                 <div class="btn-group">
                             <a href="{% url 'account' %}" type="button" class="btn btn-primary">Back</a>
                 </div>
                 <div class="btn-group pull-right">
-                    <a href="{% url 'orders' %}" type="button" class="btn btn-primary">Place Order</a>
+                    <form action="/account/orders/" method="post">
+                        {% csrf_token %}
+                        <input class="btn btn-primary" type="submit" value="Place Order">
+                    </form>
+                    <!-- <a href="{% url 'orders' %}" type="button" class="btn btn-primary">Place Order</a> -->
                 </div>
 
             </div>
@@ -36,6 +40,4 @@
         <div class="col-sm-2 col-md-2"></div>
     </div>
 </div>
-
-
 {% endblock content %}

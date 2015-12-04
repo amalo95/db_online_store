@@ -4,26 +4,57 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from .forms import UserForm, UserProfileForm
 from django.contrib.auth.decorators import login_required
 from .models import UserProfile
+from carts.models import Cart
+from main_store.models import Order, OrderRelation, Contain
 from django.core.urlresolvers import reverse
 
 
 @login_required
 def orders(request):
+
     current_user = request.user
     user_id = current_user.id
     user_profile = UserProfile.objects.get(user_id=user_id)
+
+    if request.method == 'POST':
+        # carts = ""
+        print "IN order POST"
+        
+
+        cartCollection = Cart.objects.filter(user_id=user_profile.id)
+        if cartCollection:
+            newOrder = Order()
+            print newOrder.date
+            print newOrder.paid
+            newOrder.save()
+
+            orderRelation = OrderRelation(order_id=newOrder.id, user_id=user_profile.id)
+            orderRelation.save()
+
+            for cart in cartCollection:
+                containRelationship= Contain(quantity=cart.quantity, order_id=newOrder.id, product_id=cart.product_id)
+                containRelationship.save()
+            
+            orders = OrderRelation.objects.filter(user_id=user_profile.id)
+            #return HttpResponseRedirect(reverse('orders'))
+    else:
+        print "IN order get"
+        orders = OrderRelation.objects.filter(user_id=user_profile.id)
+        #cart_form = CartForm(data=request.POST)
     return render(request, 'accounts/orders.html', {
-        'user_profile': user_profile,
+        'orders': orders,
     })
 
-# @login_required
-# def cart(request):
-#     current_user = request.user
-#     user_id = current_user.id
-#     user_profile = UserProfile.objects.get(user_id=user_id)
-#     return render(request, 'accounts/cart.html', {
-#         # 'user_profile': user_profile,
-#     })
+@login_required
+def order_detail(request, id):
+    try:
+        containSet = Contain.objects.filter(order_id=id)
+        print "Cart is else"
+    except Product.DoesNotExist:
+        raise Http404('This item does not exist')
+    return render(request, 'accounts/order_detail.html', {
+        'containSet': containSet,
+    })
 
 
 @login_required

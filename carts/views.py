@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
+from django.db.models import Sum, F
 
 from accounts.forms import UserForm, UserProfileForm
 from accounts.models import UserProfile
@@ -40,10 +41,13 @@ def cart(request):
     	user_profile_id = user_profile.id
     	print user_profile_id
     	carts = Cart.objects.filter(user_id=user_profile_id)
+
+        total = carts.aggregate(total=Sum(F('quantity')))
         #cart_form = CartForm(data=request.POST)
     return render(request,
             'accounts/cart.html',
-            {'carts': carts,} )
+            {'carts': carts,
+            'total': total,} )
 
 # def index(request):
 #     products = Product.objects.exclude(stock_quantity=0)
