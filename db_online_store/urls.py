@@ -16,4 +16,3 @@ urlpatterns = [
         url(r'^account/orders/$', accountsViews.orders, name='orders'),
         url(r'^account/cart/$', accountsViews.cart, name='orders'),
 ]
-s
