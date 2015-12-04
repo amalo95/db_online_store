@@ -2,6 +2,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from accounts import views as accountsViews
 from main_store import views as storeViews
+from carts import views as cartViews
 
 urlpatterns = [
 		url(r'^$', storeViews.index, name='index'),
@@ -14,5 +15,5 @@ urlpatterns = [
         url(r'^account/edit/$', accountsViews.edit_account, name='edit_account'),
         url(r'^account/delete/$', accountsViews.delete_account, name='delete_account'),
         url(r'^account/orders/$', accountsViews.orders, name='orders'),
-        url(r'^account/cart/$', accountsViews.cart, name='orders'),
+        url(r'^account/cart/$', cartViews.cart, name='cart'),
 ]

@@ -6,32 +6,47 @@ from django.core.urlresolvers import reverse
 
 from accounts.forms import UserForm, UserProfileForm
 from accounts.models import UserProfile
+from .models import Cart
 
 # Create your views here.
 @login_required
 def cart(request):
     if request.method == 'POST':
-        
-        current_user = request.user
-        user_id = current_user.id
-        user_profile = UserProfile.objects.get(user_id=user_id)
+        carts = ""
+        print "IN CART POST"
+        # current_user = request.user
+        # user_id = current_user.id
+        # user_profile = UserProfile.objects.get(user_id=user_id)
 
-        cart_form = CartForm(data=request.POST)
+        # cart_form = CartForm(data=request.POST)
        
-        if cart_form.is_valid():
-            cart = cart_form.save()
+        # if cart_form.is_valid():
+        #     cart = cart_form.save()
 
 
-            # Now we hash the password with the set_password method.
-            # Once hashed, we can update the user object.
-            cart.UserProfile_id = user_profile.id
-            cart.product_id = request.product.id
-            cart.save()
+        #     # Now we hash the password with the set_password method.
+        #     # Once hashed, we can update the user object.
+        #     cart.UserProfile_id = user_profile.id
+        #     cart.product_id = request.product.id
+        #     cart.save()
 
           
-            return HttpResponseRedirect(reverse('index'))
+        #     return HttpResponseRedirect(reverse('index'))
     else:
-        cart_form = CartForm(data=request.POST)
+    	print "IN CART get"
+    	current_user = request.user
+    	user_id = current_user.id
+    	user_profile = UserProfile.objects.get(user_id=user_id)
+    	user_profile_id = user_profile.id
+    	print user_profile_id
+    	carts = Cart.objects.filter(user_id=user_profile_id)
+        #cart_form = CartForm(data=request.POST)
     return render(request,
-            'products/product_detail.html',
-            {'cart_form': cart_form,} )
+            'accounts/cart.html',
+            {'carts': carts,} )
+
+# def index(request):
+#     products = Product.objects.exclude(stock_quantity=0)
+#     return render(request, 'products/index.html', {
+#         'products': products,
+#     })

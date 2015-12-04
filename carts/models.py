@@ -7,4 +7,4 @@ from main_store.models import Product
 class Cart(models.Model):
 	user = models.ForeignKey('accounts.UserProfile')
 	product = models.ForeignKey('main_store.Product')
-	quaintity = models.PositiveIntegerField(default=1)
+	quantity = models.PositiveIntegerField(default=1)

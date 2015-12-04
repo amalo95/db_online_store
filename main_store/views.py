@@ -3,6 +3,9 @@ from django.http import HttpResponseRedirect, Http404
 from django.core.urlresolvers import reverse
 from django.views import generic
 from .models import Product
+from accounts.models import UserProfile
+from carts.forms import CartForm
+from carts.models import Cart
 
 # Create your views here.
 def index(request):
@@ -12,17 +15,45 @@ def index(request):
     })
 
 def product_detail(request, id):
-    try:
-        product = Product.objects.get(id=id)
+    print request.method
+    print "this ithe id: " + id
+    if request.method == 'POST':
+        print "Cart is post"
         current_user = request.user
+
         user_id = current_user.id
+        
+
         user_profile = UserProfile.objects.get(user_id=user_id)
-        if request.method == 'POST':
-            current_user.delete()
-            user_profile.delete()
-        return HttpResponseRedirect(reverse('account'))
-    except Product.DoesNotExist:
-        raise Http404('This item does not exist')
+        productInstance = Product.objects.get(id=id)
+        
+        cartObj = Cart(user=user_profile, product=productInstance)
+        cart_form = CartForm(data=request.POST,instance=cartObj)
+       
+        if cart_form.is_valid():
+            print "Cart is valid"
+            cart = cart_form.save()
+
+
+            # Now we hash the password with the set_password method.
+            # Once hashed, we can update the user object.
+            cart.UserProfile_id = user_profile.id
+            cart.product_id = id
+            print "checking for null" + cart.product_id
+            cart.save()
+
+          
+            return HttpResponseRedirect(reverse('cart'))
+    
+    else:
+        try:
+            product = Product.objects.get(id=id)
+            cart_form = CartForm(data=request.POST)
+            print "Cart is else"
+        except Product.DoesNotExist:
+            raise Http404('This item does not exist')
+    
     return render(request, 'products/product_detail.html', {
         'product': product,
+        'cart_form': cart_form,
     })

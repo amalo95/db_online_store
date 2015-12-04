@@ -5,27 +5,35 @@
     
 <div class="container">
     <div class="row">
-        <div class="col-sm-3 col-md-3"></div>
-        <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="col-sm-2 col-md-2"></div>
+        <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
             <div class="well well-sm">
-                <div class="row">
-                    
-
-                    <div class="col-sm-6 col-md-4 col-xs-3">
-                        <img src="http://s3.amazonaws.com/37assets/svn/765-default-avatar.png" alt="" class="img-rounded img-responsive" />
-                    </div>
-                    <div class="col-sm-6 col-md-8 col-xs-9">
-
-
-
-                        <div class="btn-group">
+                <h2 class="text-center">Cart</h2>
+                <table class="table table-striped">
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th> 
+                    <th>Qty.</th>
+                </tr>
+                {% for cart in carts %}
+                <tr>
+                    <td ><a href="{% url 'product_detail' cart.product.id %}">{{ cart.product.name | capfirst }}</a></td>
+                    <td ><a href="{% url 'product_detail' cart.product.id %}">{{ cart.product.price }}</a></td>
+                    <td href="">{{ cart.quantity}}</td>
+                </tr>
+                {% endfor %}
+                </table>
+                
+                <div class="btn-group">
                             <a href="{% url 'account' %}" type="button" class="btn btn-primary">Back</a>
-                        </div>
-                    </div>
                 </div>
+                <div class="btn-group pull-right">
+                    <a href="{% url 'orders' %}" type="button" class="btn btn-primary">Place Order</a>
+                </div>
+
             </div>
         </div>
-        <div class="col-sm-3 col-md-3"></div>
+        <div class="col-sm-2 col-md-2"></div>
     </div>
 </div>
 

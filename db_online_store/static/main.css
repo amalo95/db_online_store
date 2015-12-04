@@ -3,7 +3,7 @@ h1, h2, h3 {
 }
 
 a {
-    font-size: 2em;
+    font-size: 1.5em;
 }
 
 ul {
@@ -28,7 +28,7 @@ body {
 	/*color: blue;*/
 }
 
-.glyphicon {  margin-bottom: 10px;margin-right: 10px;}
+
 
 small {
 display: block;
