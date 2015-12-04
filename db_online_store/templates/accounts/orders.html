@@ -28,6 +28,10 @@
                             <a href="{% url 'account' %}" type="button" class="btn btn-primary">Back</a>
                 </div>
             </div>
+            {% if inventoryErrorMessage %}
+            <div class="alert alert-danger" role="alert">Order could not be completed because the product, {{inventoryErrorMessage}}, does not have enough inventory.</div>
+            
+            {% endif %}
         </div>
         <div class="col-sm-3 col-md-3"></div>
     </div>

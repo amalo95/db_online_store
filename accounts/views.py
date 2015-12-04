@@ -5,12 +5,13 @@ from .forms import UserForm, UserProfileForm
 from django.contrib.auth.decorators import login_required
 from .models import UserProfile
 from carts.models import Cart
-from main_store.models import Order, OrderRelation, Contain
+from main_store.models import Order, OrderRelation, Contain, Product
 from django.core.urlresolvers import reverse
 
 
 @login_required
 def orders(request):
+    inventoryErrorMessage = ""
 
     current_user = request.user
     user_id = current_user.id
@@ -22,27 +23,41 @@ def orders(request):
         
 
         cartCollection = Cart.objects.filter(user_id=user_profile.id)
-        if cartCollection:
+        noInventoryIssue = True;
+
+        #checks to see if its in stock
+        for cart in cartCollection:
+            product_id = cart.product_id
+            invProduct = Product.objects.get(id=product_id)
+            if cart.quantity >= invProduct.stock_quantity:
+                noInventoryIssue = False;
+                inventoryErrorMessage = cart.product.name
+                
+
+        if cartCollection and noInventoryIssue:
             newOrder = Order()
             print newOrder.date
             print newOrder.paid
             newOrder.save()
-
             orderRelation = OrderRelation(order_id=newOrder.id, user_id=user_profile.id)
             orderRelation.save()
 
             for cart in cartCollection:
                 containRelationship= Contain(quantity=cart.quantity, order_id=newOrder.id, product_id=cart.product_id)
                 containRelationship.save()
+                cart.delete()
+        else:
+            Cart.objects.all().delete()
             
-            orders = OrderRelation.objects.filter(user_id=user_profile.id)
-            #return HttpResponseRedirect(reverse('orders'))
+        orders = OrderRelation.objects.filter(user_id=user_profile.id)
+        #return HttpResponseRedirect(reverse('orders'))
     else:
         print "IN order get"
         orders = OrderRelation.objects.filter(user_id=user_profile.id)
         #cart_form = CartForm(data=request.POST)
     return render(request, 'accounts/orders.html', {
         'orders': orders,
+        'inventoryErrorMessage': inventoryErrorMessage,
     })
 
 @login_required
