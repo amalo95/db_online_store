@@ -9,32 +9,51 @@
             <div class="well well-sm">
                 <h2 class="text-center">Cart</h2>
                 <table class="table table-striped">
-                <tr>
-                    <th>Product</th>
-                    <th>Price</th> 
-                    <th>Qty.</th>
-                    <!-- <th>Agg. Price</th> -->
-                </tr>
-                {% for cart in carts %}
-                <tr>
-                    <td ><a href="{% url 'product_detail' cart.product.id %}">{{ cart.product.name | capfirst }}</a></td>
-                    <td ><a href="{% url 'product_detail' cart.product.id %}">{{ cart.product.price }}</a></td>
-                    <td href="">{{ cart.quantity}}</td>
-                    <!-- <td href="">{{ cart.quantity}} * {{cart.product.price}}</td> -->
-                </tr>
-                {% endfor %}
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th> 
+                        <th>Qty.</th>
+                        <th>Agg. Price</th>
+                    </tr>
+                    {% if carts %}
+                    {% for cart in carts %}
+                    <tr>
+                        <td ><a href="{% url 'product_detail' cart.product.id %}">{{ cart.product.name | capfirst }}</a></td>
+                        <td ><a href="{% url 'product_detail' cart.product.id %}">{{ cart.product_price }}</a></td>
+                        <td href="">{{ cart.quantity}}</td>
+                        <td href="">{{ cart.agg_price}}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <td ></td>
+                        <td ></td>
+                        <td ><strong>Total: </strong></td>
+                        <td ><strong>{{total.total}}</strong></td>
+                    </tr>
+                    </table>
+                    {% else %}
                 </table>
-                <p>total is {{total}}</p>
-                <div class="btn-group">
-                            <a href="{% url 'account' %}" type="button" class="btn btn-primary">Back</a>
+                    <p>Cart is empty...</p>
+                    {% endif %}
+                <div class="row">
+                    <div class="btn-group col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                        <a href="{% url 'account' %}" type="button" class="btn btn-primary">Back</a>
+                    </div>
+                    <div class="btn-group col-lg-6 col-md-6 col-sm-3 col-xs-3">
+                        <form action="/account/cart/" method="post">
+                            {% csrf_token %}
+                            <input class="btn btn-primary pull-right" type="submit" value="Clear Cart">
+                        </form>
+                    </div>
+                    <div class="btn-group col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                        <form action="/account/orders/" method="post">
+                            {% csrf_token %}
+                            <input class="btn btn-primary pull-right" type="submit" value="Place Order and Pay">
+                        </form>
+                        <!-- <a href="{% url 'orders' %}" type="button" class="btn btn-primary">Place Order</a> -->
+                    </div>
                 </div>
-                <div class="btn-group pull-right">
-                    <form action="/account/orders/" method="post">
-                        {% csrf_token %}
-                        <input class="btn btn-primary" type="submit" value="Place Order">
-                    </form>
-                    <!-- <a href="{% url 'orders' %}" type="button" class="btn btn-primary">Place Order</a> -->
-                </div>
+                
 
             </div>
         </div>

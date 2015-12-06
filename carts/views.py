@@ -14,7 +14,17 @@ from .models import Cart
 def cart(request):
     if request.method == 'POST':
         carts = ""
+        total = ""
         print "IN CART POST"
+        current_user = request.user
+        user_id = current_user.id
+        user_profile = UserProfile.objects.get(user_id=user_id)
+        user_profile_id = user_profile.id
+        print user_profile_id
+        cartCollection = Cart.objects.filter(user_id=user_profile_id)
+
+        for cart in cartCollection:
+            cart.delete()
         # current_user = request.user
         # user_id = current_user.id
         # user_profile = UserProfile.objects.get(user_id=user_id)
@@ -42,7 +52,7 @@ def cart(request):
     	print user_profile_id
     	carts = Cart.objects.filter(user_id=user_profile_id)
 
-        total = carts.aggregate(total=Sum(F('quantity')*F('price')))
+        total = carts.aggregate(total=Sum(F('agg_price')))
         #cart_form = CartForm(data=request.POST)
     return render(request,
             'accounts/cart.html',

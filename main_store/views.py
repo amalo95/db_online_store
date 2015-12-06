@@ -109,8 +109,11 @@ def product_detail(request, id):
 
         user_profile = UserProfile.objects.get(user_id=user_id)
         productInstance = Product.objects.get(id=id)
-        
-        cartObj = Cart(user=user_profile, product=productInstance)
+
+        #print request.POST.get('quantity')
+        agg_price_value = float(productInstance.price) * float(request.POST.get('quantity'))
+        print agg_price_value
+        cartObj = Cart(user=user_profile, product=productInstance, product_price=productInstance.price, agg_price=agg_price_value)
         cart_form = CartForm(data=request.POST,instance=cartObj)
        
         if cart_form.is_valid():
