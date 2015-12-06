@@ -42,7 +42,7 @@ def cart(request):
     	print user_profile_id
     	carts = Cart.objects.filter(user_id=user_profile_id)
 
-        total = carts.aggregate(total=Sum(F('quantity')))
+        total = carts.aggregate(total=Sum(F('quantity')*F('price')))
         #cart_form = CartForm(data=request.POST)
     return render(request,
             'accounts/cart.html',

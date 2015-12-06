@@ -4,8 +4,9 @@
 
 	<a href="{% url 'index' %}"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>Back</a>
 	<h3>{{product.name | capfirst }}</h3>
-	<h4>Price: {{product.price}}</h4>
-	<p>Currently in stock: {{ product.stock_quantity }} </p>
+	<h4>Price: <span style="color: rgb(177, 39, 4)">{{product.price}}</span> </h4>
+	<h4>In stock: <span style="color: rgb(0, 138, 0)">{{ product.stock_quantity }}</span> </h4>
+	<br/>
 	<h4>Description:</h4>
 	<p> {{ product.description }} </p>
 	{% if user.is_anonymous %}
@@ -14,9 +15,9 @@
 	
 	<form action="/product/{{product.id}}/" method="post">
 		{% csrf_token %}
-    <label for="quantity">quantity: </label>
-    <input id="quantity" type="number" name="quantity" value="1">
-    <input type="submit" value="OK">
+    <label for="quantity" style="display: block;">Quantity: </label>
+    <input id="quantity" type="number" name="quantity" value="1" >
+    <input class="btn btn-default" type="submit" value="Add to Cart">
 	</form>
 	{% endif %}
 

@@ -8,6 +8,89 @@ from carts.forms import CartForm
 from carts.models import Cart
 
 # Create your views here.
+
+
+
+def searchLow(request):
+    try:
+        q=request.GET.get('q')
+    except:
+        q=None
+        print "holakease"
+
+    if q:   
+        query=q
+        print query
+        print "hello"
+        productsLow = Product.objects.filter(name__icontains=q).order_by('price')
+        print productsLow
+        
+
+    return render(request,'products/search_low.html', {
+        'productsLow': productsLow, "query": query,
+    })
+
+
+def searchHigh(request):
+    try:
+        q=request.GET.get('q')
+    except:
+        q=None
+        print "holakease"
+
+    if q:   
+        query=q
+        print query
+        print "hello"
+        productsLow = Product.objects.filter(name__icontains=q).order_by('-price')
+        print productsLow
+        
+
+    return render(request,'products/search_high.html', {
+        'productsLow': productsLow, "query": query,
+    })
+# def searchLow(request):
+#     try:
+#         q=request.GET.get('q')
+#     except:
+#         q=None
+#         print "holakease"
+
+#     if q:   
+#         query=q
+#         print query
+#         print "hello"
+#         productsLow = Product.objects.filter(name__icontains=q).order_by('price')
+#         print productsLow
+        
+
+#     return render(request,'products/search_low.html', {
+#         'productsLow': productsLow, "query": query,
+#     })
+
+def sortLow(request, query):
+    try:
+        print "inside low: " + query
+        productsLow = Product.objects.filter(name__icontains=query).order_by('price')
+    except:
+        productsLow = None
+        print "holakease"
+    return render(request,'products/sort_low.html', {
+        'productsLow': productsLow, "query": query,
+    })
+
+def sortHigh(request, query):
+    try:
+        print "inside low: " + query
+        productsHigh = Product.objects.filter(name__icontains=query).order_by('-price')
+    except:
+        productsHigh = None
+        print "holakease"
+
+    return render(request,'products/sort_high.html', {
+        'productsHigh': productsHigh, "query": query,
+    })
+
 def index(request):
     products = Product.objects.exclude(stock_quantity=0)
     return render(request, 'products/index.html', {

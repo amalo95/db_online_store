@@ -29,10 +29,11 @@ def orders(request):
         for cart in cartCollection:
             product_id = cart.product_id
             invProduct = Product.objects.get(id=product_id)
-            if cart.quantity >= invProduct.stock_quantity:
+            print " cart " + `cart.quantity`
+            print " stock " + `invProduct.stock_quantity`
+            if cart.quantity > invProduct.stock_quantity:
                 noInventoryIssue = False;
                 inventoryErrorMessage = cart.product.name
-                
 
         if cartCollection and noInventoryIssue:
             newOrder = Order()
@@ -42,7 +43,18 @@ def orders(request):
             orderRelation = OrderRelation(order_id=newOrder.id, user_id=user_profile.id)
             orderRelation.save()
 
+            #updating stock and clearing cart
             for cart in cartCollection:
+                product_id = cart.product_id
+                invProduct = Product.objects.get(id=product_id)
+                in_stock = invProduct.stock_quantity
+                order_quantity = cart.quantity
+
+                #updating product stock quantity
+                in_stock -= order_quantity
+                invProduct.stock_quantity = in_stock
+                invProduct.save()
+
                 containRelationship= Contain(quantity=cart.quantity, order_id=newOrder.id, product_id=cart.product_id)
                 containRelationship.save()
                 cart.delete()

@@ -13,12 +13,14 @@
                     <th>Product</th>
                     <th>Price</th> 
                     <th>Qty.</th>
+                    <!-- <th>Agg. Price</th> -->
                 </tr>
                 {% for cart in carts %}
                 <tr>
                     <td ><a href="{% url 'product_detail' cart.product.id %}">{{ cart.product.name | capfirst }}</a></td>
                     <td ><a href="{% url 'product_detail' cart.product.id %}">{{ cart.product.price }}</a></td>
                     <td href="">{{ cart.quantity}}</td>
+                    <!-- <td href="">{{ cart.quantity}} * {{cart.product.price}}</td> -->
                 </tr>
                 {% endfor %}
                 </table>
