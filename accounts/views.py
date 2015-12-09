@@ -7,6 +7,10 @@ from .models import UserProfile
 from carts.models import Cart
 from main_store.models import Order, OrderRelation, Contain, Product
 from django.core.urlresolvers import reverse
+from django.dispatch import receiver
+from django.db.models.signals import post_save  ###
+from django.core.mail import send_mail
+from django.contrib.auth.models import User
 
 
 @login_required
@@ -71,6 +75,27 @@ def orders(request):
         'orders': orders,
         'inventoryErrorMessage': inventoryErrorMessage,
     })
+
+
+@receiver(post_save,sender=Contain)
+def alert_admin(sender,**kwargs):
+    print "in alert_adminssss new dude"
+    contain_id = kwargs.get('instance').id
+
+    contain_obj = Contain.objects.get(id=contain_id)
+    get_product_id = contain_obj.product_id
+    print get_product_id
+    product = Product.objects.get(id=get_product_id)
+    if product.stock_quantity < 5:
+        print product.name + " is low on stock"
+        get_admins = User.objects.filter(is_staff=True)
+        for admin in get_admins:
+            admin_email = admin.email
+            print admin_email
+            send_mail('Message From your DB ONLINE STORE', (product.name + ' is low on stock. Let supplier know.'), 'dbexample123@gmail.com', [admin_email], fail_silently=True)
+
+    print "olakease after create"
+
 
 @login_required
 def order_detail(request, id):

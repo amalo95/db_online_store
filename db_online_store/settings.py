@@ -112,3 +112,9 @@ LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = "/account/"
 
 TIME_ZONE = 'America/New_York'
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'dbexample123@gmail.com'
+EMAIL_HOST_PASSWORD = 'gogators123'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True

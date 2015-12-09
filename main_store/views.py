@@ -22,7 +22,7 @@ def searchLow(request):
         query=q
         print query
         print "hello"
-        productsLow = Product.objects.filter(name__icontains=q).order_by('price')
+        productsLow = Product.objects.filter(name__icontains=q).order_by('price').exclude(stock_quantity=0)
         print productsLow
         
 
@@ -42,7 +42,7 @@ def searchHigh(request):
         query=q
         print query
         print "hello"
-        productsLow = Product.objects.filter(name__icontains=q).order_by('-price')
+        productsLow = Product.objects.filter(name__icontains=q).order_by('-price').exclude(stock_quantity=0)
         print productsLow
         
 
@@ -71,7 +71,7 @@ def searchHigh(request):
 def sortLow(request, query):
     try:
         print "inside low: " + query
-        productsLow = Product.objects.filter(name__icontains=query).order_by('price')
+        productsLow = Product.objects.filter(name__icontains=query).order_by('price').exclude(stock_quantity=0)
     except:
         productsLow = None
         print "holakease"
@@ -82,7 +82,7 @@ def sortLow(request, query):
 def sortHigh(request, query):
     try:
         print "inside low: " + query
-        productsHigh = Product.objects.filter(name__icontains=query).order_by('-price')
+        productsHigh = Product.objects.filter(name__icontains=query).order_by('-price').exclude(stock_quantity=0)
     except:
         productsHigh = None
         print "holakease"

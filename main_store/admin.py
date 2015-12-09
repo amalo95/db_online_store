@@ -21,14 +21,16 @@ class SupplyAdmin(admin.ModelAdmin):
 		return obj.product.name
 
 class OrderAdmin(admin.ModelAdmin):
-	list_display = ['date', 'paid']
+	list_display = ['get_id', 'date', 'paid']
+	def get_id(self, obj):
+		return obj.id
 
 class OrderRelationAdmin(admin.ModelAdmin):
 	list_display = ['get_order','get_user']
 	def get_order(self, obj):
 		return obj.order.id
 	def get_user(self, obj):
-		return obj.user.name
+		return obj.user.user.username
 
 class ContainAdmin(admin.ModelAdmin):
 	list_display = ['quantity','get_order','get_product']
